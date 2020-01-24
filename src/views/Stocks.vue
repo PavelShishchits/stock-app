@@ -7,7 +7,7 @@
                 v-for="stock in stocks"
                 :key="stock.name"
             >
-                <card :data="stock" type="stock"></card>
+                <card :data="stock"></card>
             </div>
         </div>
         <preloader :active="isLoading"></preloader>

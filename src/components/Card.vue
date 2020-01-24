@@ -1,13 +1,13 @@
 <template>
-    <div class="card" :class="type">
+    <div class="card">
         <div class="card-header">
-            <span class="card-title">{{ data.name }}</span> ({{ cardDescription }})
+            <span class="card-title">{{ data.name }}</span> (Price: {{ data.price }})
         </div>
         <div class="card-body">
             <div class="card-input">
                 <input class="form-control" type="text" v-model="quantity" placeholder="Quantity">
             </div>
-            <button class="btn btn-success" @click="buyStocks">{{ btnText }}</button>
+            <button class="btn btn-success" @click="buyStocks">Buy</button>
         </div>
     </div>
 </template>
@@ -20,10 +20,6 @@
             data: {
                 type: Object,
                 required: true
-            },
-            type: {
-                type: String,
-                default: 'stock'
             }
         },
         data() {
@@ -44,18 +40,6 @@
                     ...this.data,
                     quantity: +quantity
                 });
-            }
-        },
-        computed: {
-            btnText() {
-                return this.isPortfolioCard ? 'Sell' : 'Buy';
-            },
-            isPortfolioCard() {
-                return this.type === 'portfolio';
-            },
-            cardDescription() {
-                const {data} = this;
-                return this.isPortfolioCard ? `Price: ${data.price} | Quantity: ${data.quantity}` : `Price: ${data.price}` ;
             }
         }
     }
