@@ -3,7 +3,9 @@
     <div class="container">
       <app-header></app-header>
       <transition name="slide" mode="out-in">
-        <router-view/>
+        <keep-alive include="stocks">
+          <router-view/>
+        </keep-alive>
       </transition>
     </div>
   </div>
@@ -18,6 +20,7 @@
     }
   }
 </script>
+
 <style lang="scss">
 
   #app {
@@ -45,6 +48,22 @@
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  .fade-enter-active {
+    transition: opacity .5s ease-out;
+    opacity: 1;
+  }
+
+  .fade-leave-active {
+    transition: opacity .5s ease-out;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  .fade-move {
+    transition: transform .5s ease-out;
   }
 
 </style>

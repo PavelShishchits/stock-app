@@ -7,7 +7,7 @@
                 v-for="stock in stocks"
                 :key="stock.name"
             >
-                <card :data="stock"></card>
+                <card :stock="stock"></card>
             </div>
         </div>
         <preloader :active="isLoading"></preloader>
@@ -16,7 +16,7 @@
 
 <script>
     // @ is an alias to /src
-    import {mapActions, mapState} from 'vuex';
+    import {mapActions, mapState, mapGetters} from 'vuex';
     import Card from '@/components/Card';
 
     export default {
@@ -30,8 +30,10 @@
             ])
         },
         computed: {
+            ...mapGetters('stocks', [
+                'stocks'
+            ]),
             ...mapState('stocks', [
-                'stocks',
                 'error',
                 'isLoading'
             ])

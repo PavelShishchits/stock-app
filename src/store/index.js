@@ -12,8 +12,24 @@ export default new Vuex.Store({
     getters: {
         amount: (state) => state.amount
     },
-    mutations: {},
-    actions: {},
+    mutations: {
+        'INCREASE_AMOUNT': (state, payload) => {
+            if (!isNaN(payload)) {
+                state.amount += payload;
+            } else {
+                console.error('value must be a number');
+            }
+        },
+        'DECREASE_AMOUNT': (state, payload) => {
+            if (!isNaN(payload)) {
+                state.amount -= payload;
+            } else {
+                console.error('value must be a number');
+            }
+        }
+    },
+    actions: {
+    },
     modules: {
         stocks,
         portfolio

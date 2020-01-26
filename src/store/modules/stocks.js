@@ -1,21 +1,33 @@
 import Axios from 'axios';
+import {normalizeArrayByProp} from '../../helpers/utils';
 
 export default {
     namespaced: true,
     state: {
-        stocks: [],
+        stocks: {},
         error: null,
         isLoading: false
     },
+    getters: {
+      stocks: (state) => state.stocks
+    },
     mutations: {
-        'SET_STOCKS_LIST': (state, stocks) => {
-            state.stocks = stocks;
+        'SET_STOCKS_LIST': (state, payload) => {
+            state.stocks = normalizeArrayByProp(payload, 'id');
         },
         'SET_STOCKS_ERROR': (state, error) => {
             state.error = error;
         },
         'SET_STOCKS_LOADER': (state, isLoading) => {
             state.isLoading = isLoading;
+        },
+        'RECALCULATE_STOCKS': (state) => {
+            const stocks = state.stocks;
+            for (let key in stocks) {
+                if (stocks.hasOwnProperty(key)) {
+                    stocks[key].price = Math.round(stocks[key].price * (1 + Math.random() - 0.5));
+                }
+            }
         }
     },
     actions: {
@@ -31,6 +43,9 @@ export default {
                 .then(() => {
                     commit('SET_STOCKS_LOADER', false)
                 });
+        },
+        recalcStocks: ({commit}) => {
+            commit('RECALCULATE_STOCKS');
         }
     }
 }

@@ -1,13 +1,13 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="card-title">{{ data.name }}</span> (Price: {{ data.price }})
+            <span class="card-title">{{ stock.name }}</span> (Price: {{ stock.price }})
         </div>
         <div class="card-body">
             <div class="card-input">
-                <input class="form-control" type="text" v-model="quantity" placeholder="Quantity">
+                <input class="form-control" type="text" v-model.number="quantity" placeholder="Quantity">
             </div>
-            <button class="btn btn-success" @click="buyStocks">Buy</button>
+            <button class="btn btn-success" :class="{disabled: impossibleOperation || quantity <= 0 || isNaN(quantity)}" @click="handleBuyClick">Buy</button>
         </div>
     </div>
 </template>
@@ -17,29 +17,36 @@
 
     export default {
         props: {
-            data: {
+            stock: {
                 type: Object,
                 required: true
             }
         },
         data() {
             return {
-                quantity: ''
+                quantity: null
             }
         },
         methods: {
             ...mapActions('portfolio', [
-                'changeStockQuantity'
+                'buyStocks'
             ]),
-            buyStocks() {
-                const {quantity} = this;
-                if (!quantity) {
-                    return false;
-                }
-                this.changeStockQuantity({
-                    ...this.data,
-                    quantity: +quantity
+            handleBuyClick() {
+                const { stock } = this;
+                this.buyStocks({
+                    price: stock.price,
+                    id: stock.id,
+                    quantity: this.quantity
                 });
+                this.quantity = null;
+            }
+        },
+        computed: {
+            amount() {
+                return this.$store.state.amount;
+            },
+            impossibleOperation() {
+                return this.quantity * this.stock.price > this.amount;
             }
         }
     }
@@ -63,6 +70,10 @@
         .card-body {
             display: flex;
             justify-content: space-between;
+        }
+
+        .btn.disabled {
+            pointer-events: none;
         }
     }
 </style>

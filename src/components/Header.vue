@@ -9,7 +9,7 @@
                 <ul class="navbar-nav">
                     <router-link class="nav-item" tag="li" :to="{path: 'portfolio'}" active-class="active"><a class="nav-link">Portfolio</a></router-link>
                     <router-link class="nav-item" tag="li" :to="{path: 'stocks'}" active-class="active"><a class="nav-link">Stocks</a></router-link>
-                    <li class="nav-item ml-auto"><a class="nav-link btn">End day</a></li>
+                    <li class="nav-item ml-auto"><a class="nav-link btn" @click.prevent="recalcStocks">End day</a></li>
                     <li class="nav-item dropdown" :class="{show: showDropDown}">
                         <a class="nav-link dropdown-toggle" href="#" role="button" @click.prevent="showDropDown = !showDropDown">
                             Save & Load
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         data() {
@@ -37,6 +37,11 @@
                 showDropDown: false,
                 showMobileMenu: false
             }
+        },
+        methods: {
+            ...mapActions('stocks', [
+                'recalcStocks'
+            ])
         },
         computed: {
             ...mapGetters([
