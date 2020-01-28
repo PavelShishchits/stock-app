@@ -13,7 +13,7 @@ export default {
     },
     mutations: {
         'SET_STOCKS_LIST': (state, payload) => {
-            state.stocks = normalizeArrayByProp(payload, 'id');
+            state.stocks = Array.isArray(payload) ? normalizeArrayByProp(payload, 'id') : payload;
         },
         'SET_STOCKS_ERROR': (state, error) => {
             state.error = error;
@@ -33,9 +33,9 @@ export default {
     actions: {
         setStocks: ({commit}) => {
             commit('SET_STOCKS_LOADER', true);
-            Axios.get('/static/stocks.json')
+            Axios.get('stocks.json')
                 .then(response => {
-                    commit('SET_STOCKS_LIST', response.data.stocks)
+                    commit('SET_STOCKS_LIST', response.data)
                 })
                 .catch((error) => {
                     commit('SET_STOCKS_ERROR', error);
@@ -44,7 +44,7 @@ export default {
                     commit('SET_STOCKS_LOADER', false)
                 });
         },
-        recalcStocks: ({commit}) => {
+        reCalcStocks: ({commit}) => {
             commit('RECALCULATE_STOCKS');
         }
     }

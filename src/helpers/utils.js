@@ -4,3 +4,5 @@ export const normalizeArrayByProp = (array, prop) => {
         return obj;
     }, {});
 };
+
+export const apiUrl = 'https://stock-app-28541.firebaseio.com/';

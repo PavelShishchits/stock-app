@@ -9,14 +9,14 @@
                 <ul class="navbar-nav">
                     <router-link class="nav-item" tag="li" :to="{path: 'portfolio'}" active-class="active"><a class="nav-link">Portfolio</a></router-link>
                     <router-link class="nav-item" tag="li" :to="{path: 'stocks'}" active-class="active"><a class="nav-link">Stocks</a></router-link>
-                    <li class="nav-item ml-auto"><a class="nav-link btn" @click.prevent="recalcStocks">End day</a></li>
+                    <li class="nav-item ml-auto"><a class="nav-link btn" @click.prevent="endDay">End day</a></li>
                     <li class="nav-item dropdown" :class="{show: showDropDown}">
                         <a class="nav-link dropdown-toggle" href="#" role="button" @click.prevent="showDropDown = !showDropDown">
                             Save & Load
                         </a>
                         <div class="dropdown-menu" :class="{show: showDropDown}">
-                            <a class="dropdown-item" href="#">Save</a>
-                            <a class="dropdown-item" href="#">Load</a>
+                            <a class="dropdown-item" href="#" @click.prevent="save">Save</a>
+                            <a class="dropdown-item" href="#" @click.prevent="load">Load</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+    import Axios from 'axios';
     import {mapGetters, mapActions} from 'vuex';
 
     export default {
@@ -39,9 +40,28 @@
             }
         },
         methods: {
-            ...mapActions('stocks', [
-                'recalcStocks'
-            ])
+            ...mapActions({
+                reCalcStocks: 'stocks/reCalcStocks',
+                loadData: 'loadData'
+            }),
+            endDay() {
+              this.reCalcStocks();
+            },
+            save() {
+                const data = {
+                    amount: this.$store.getters.amount,
+                    portfolio: this.$store.getters['portfolio/portfolio'],
+                    stocks: this.$store.getters['stocks/stocks'],
+                };
+                Axios({
+                    method: 'put',
+                    url: `data.json`,
+                    data: data
+                });
+            },
+            load() {
+                this.loadData();
+            }
         },
         computed: {
             ...mapGetters([
