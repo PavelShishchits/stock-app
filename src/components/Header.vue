@@ -22,6 +22,8 @@
                     <li class="nav-item">
                         <span class="nav-link">Refunds: {{ amount | formatPrice }}</span>
                     </li>
+                    <router-link class="nav-item" tag="li" :to="{path: 'registration'}" active-class="active"><a class="nav-link">Sign Up</a></router-link>
+                    <router-link class="nav-item" tag="li" :to="{path: 'login'}" active-class="active"><a class="nav-link">Sign In</a></router-link>
                 </ul>
             </div>
         </nav>

@@ -4,8 +4,8 @@ import stocks from './modules/stocks';
 import portfolio from './modules/portfolio';
 
 Vue.use(Vuex);
+
 import Axios from 'axios';
-Axios.defaults.baseURL = 'https://stock-app-28541.firebaseio.com/';
 
 export default new Vuex.Store({
     state: {
