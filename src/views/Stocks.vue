@@ -21,7 +21,7 @@
 
     export default {
         name: 'stocks',
-        created() {
+        activated() {
             this.setStocks();
         },
         methods: {

@@ -1,6 +1,11 @@
 export const normalizeArrayByProp = (array, prop) => {
+    if (!array) {
+        return;
+    }
     return array.reduce((obj, item) => {
-        obj[item[prop]] = item;
+        if (item) {
+            obj[item[prop]] = item;
+        }
         return obj;
     }, {});
 };

@@ -31,9 +31,13 @@ export default {
         }
     },
     actions: {
-        setStocks: ({commit}) => {
+        setStocks: ({commit, rootState }) => {
+            const token = rootState.auth.tokenId;
+            if (!token) {
+                return;
+            }
             commit('SET_STOCKS_LOADER', true);
-            Axios.get('stocks.json')
+            Axios.get(`stocks.json?auth=${token}`)
                 .then(response => {
                     commit('SET_STOCKS_LIST', response.data)
                 })

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import {axiosSignUp, apiKey} from '../axios/index';
+    import {mapActions} from 'vuex';
 
     export default {
         data() {
@@ -26,9 +26,12 @@
             }
         },
         methods: {
+            ...mapActions('auth', [
+               'signIn'
+            ]),
             submitForm(e) {
                 e.preventDefault();
-                axiosSignUp.post(`accounts:signInWithPassword?key=${apiKey}`, {
+                this.signIn({
                     email: this.email,
                     password: this.password,
                     returnSecureToken: true

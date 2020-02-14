@@ -1,3 +1,5 @@
+import {normalizeArrayByProp} from "../../helpers/utils";
+
 export default {
     namespaced: true,
     state: {
@@ -17,6 +19,9 @@ export default {
         }
     },
     mutations: {
+        'SET_PORTFOLIO': (state, payload) => {
+            state.portfolio = Array.isArray(payload) ? normalizeArrayByProp(payload, 'id') : payload;
+        },
         'BUY_STOCKS': (state, payload) => {
             if (state.portfolio.hasOwnProperty(payload.id)) {
                 state.portfolio[payload.id].quantity += payload.quantity;

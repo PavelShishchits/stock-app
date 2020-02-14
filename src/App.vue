@@ -3,7 +3,7 @@
     <div class="container">
       <app-header></app-header>
       <transition name="slide" mode="out-in">
-        <keep-alive include="stocks">
+        <keep-alive>
           <router-view/>
         </keep-alive>
       </transition>
@@ -17,6 +17,9 @@
   export default {
     components: {
       appHeader: Header
+    },
+    created() {
+      this.$store.dispatch('auth/autoLogIn');
     }
   }
 </script>

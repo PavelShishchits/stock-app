@@ -6,8 +6,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" :class="{show: showMobileMenu}">
-                <ul class="navbar-nav">
-                    <router-link class="nav-item" tag="li" :to="{path: 'portfolio'}" active-class="active"><a class="nav-link">Portfolio</a></router-link>
+                <ul v-if="isAuthenticated"  class="navbar-nav">
+                    <router-link tag="li" :to="{path: 'portfolio'}" active-class="active"><a class="nav-link">Portfolio</a></router-link>
                     <router-link class="nav-item" tag="li" :to="{path: 'stocks'}" active-class="active"><a class="nav-link">Stocks</a></router-link>
                     <li class="nav-item ml-auto"><a class="nav-link btn" @click.prevent="endDay">End day</a></li>
                     <li class="nav-item dropdown" :class="{show: showDropDown}">
@@ -22,8 +22,13 @@
                     <li class="nav-item">
                         <span class="nav-link">Refunds: {{ amount | formatPrice }}</span>
                     </li>
-                    <router-link class="nav-item" tag="li" :to="{path: 'registration'}" active-class="active"><a class="nav-link">Sign Up</a></router-link>
-                    <router-link class="nav-item" tag="li" :to="{path: 'login'}" active-class="active"><a class="nav-link">Sign In</a></router-link>
+                </ul>
+                <ul class="navbar-nav auth">
+                    <template v-if="!isAuthenticated">
+                        <router-link class="nav-item" tag="li" :to="{path: 'registration'}" active-class="active"><a class="nav-link">Sign Up</a></router-link>
+                        <router-link class="nav-item" tag="li" :to="{path: 'login'}" active-class="active"><a class="nav-link">Sign In</a></router-link>
+                    </template>
+                    <li v-else class="nav-item"><a class="nav-link" @click.prevent="logOut">Log Out</a></li>
                 </ul>
             </div>
         </nav>
@@ -31,7 +36,6 @@
 </template>
 
 <script>
-    import Axios from 'axios';
     import {mapGetters, mapActions} from 'vuex';
 
     export default {
@@ -44,7 +48,9 @@
         methods: {
             ...mapActions({
                 reCalcStocks: 'stocks/reCalcStocks',
-                loadData: 'loadData'
+                loadData: 'loadData',
+                saveData: 'saveData',
+                logOutAction: 'auth/logOut'
             }),
             endDay() {
               this.reCalcStocks();
@@ -55,20 +61,20 @@
                     portfolio: this.$store.getters['portfolio/portfolio'],
                     stocks: this.$store.getters['stocks/stocks'],
                 };
-                Axios({
-                    method: 'put',
-                    url: `data.json`,
-                    data: data
-                });
+                this.saveData(data);
             },
             load() {
                 this.loadData();
+            },
+            logOut() {
+                this.logOutAction();
             }
         },
         computed: {
-            ...mapGetters([
-                'amount'
-            ])
+            ...mapGetters({
+                amount: 'amount',
+                isAuthenticated: 'auth/isAuthenticated'
+            })
         }
     }
 </script>
@@ -88,8 +94,15 @@
         }
     }
 
+    .navbar-collapse {
+        align-items: center;
+
+        @media (min-width: 992px) {
+            justify-content: flex-end;
+        }
+    }
+
     .navbar-nav {
-        width: 100%;
         align-items: center;
     }
 
