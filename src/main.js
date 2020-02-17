@@ -7,6 +7,8 @@ import './assets/style.scss';
 import './helpers/filters/currencyFilter';
 import Preloader from './components/Preloader';
 
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 Vue.component('preloader', Preloader);
 
 Vue.config.productionTip = false;
