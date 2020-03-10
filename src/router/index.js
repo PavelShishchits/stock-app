@@ -6,8 +6,8 @@ import Home from '../views/Home.vue'
 import Portfolio from '../views/Portfolio.vue'
 import Stocks from '../views/Stocks.vue'
 import Login from '../views/Login.vue';
-
 import Registration from '../views/Registration.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
